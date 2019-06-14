@@ -21,7 +21,7 @@ function getTwitchAppAccessToken() {
 function getTwitchUserStreamStatus(username) {
 	return fetch('https://api.twitch.tv/helix/streams?user_login=' + username, {
 		method: 'GET', headers: generateHeaders(accessToken) })
-		.then(response => response)
+		.then(response => response.json())
 		.then(json => {
 			return json.data;
 		})
@@ -48,7 +48,7 @@ async function postToDiscord(username) {
 			},
 			body: JSON.stringify(generateMessage(username))
 		})
-	.then(response => response.json())
+	.then(response => response)
 	.catch(err => console.log(err));
 }
 
