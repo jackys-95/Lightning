@@ -5,7 +5,6 @@ var config = require("./config.json");
 
 function generateHeaders(accessToken) {
 	return new fetch.Headers({
-		'Accept': 'application/vnd.twitchtv.v5+json',
 		'Authorization': "Bearer " + accessToken,
 		'Client-Id': config['Client-Id']
 	});
@@ -22,20 +21,45 @@ function getTwitchAppAccessToken() {
 function getTwitchUserStreamStatus(username) {
 	return fetch('https://api.twitch.tv/helix/streams?user_login=' + username, {
 		method: 'GET', headers: generateHeaders(accessToken) })
-		.then(response => response.json())
+		.then(response => response)
 		.then(json => {
 			return json.data;
 		})
 		.catch(err => console.log(err));
 }
 
+function generateMessage(username) {
+	return {
+		"content": username + " is streaming!",
+		"tts": false,
+		"embeds": [{
+			"title": "Watch here!",
+			"url": "https://www.twitch.tv/" + username,
+			"description": "This is an embedded message."
+		}]
+	};
+}
+
+async function postToDiscord(username) {
+	return fetch('https://discordapp.com/api/webhooks/' + config['Discord-Hook-Id'] + '/' +
+		config['Discord-Hook-Token'], {
+			method: 'POST', headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(generateMessage(username))
+		})
+	.then(response => response.json())
+	.catch(err => console.log(err));
+}
+
 async function checkUserStreamStatus() {
 	return await getTwitchUserStreamStatus(config['Target-User'])
-		.then(data => {
+		.then(async data => {
 			if (data != null && data.length != 0) {
 				var t2 = process.hrtime(t1);
 				console.info('Execution time (s): %ds', t2[0]);
 				console.log(data);
+				await postToDiscord(config['Target-User']).then(data => console.log(data));
 				return true;
 			}
 			else {
