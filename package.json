@@ -1,0 +1,24 @@
+{
+  "name": "lightning",
+  "version": "1.0.0",
+  "description": "Fast Discord Twitch Stream Notifications.",
+  "main": "app.js",
+  "dependencies": {
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackys-95/Lightning.git"
+  },
+  "author": "Jacky Shum",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jackys-95/Lightning/issues"
+  },
+  "homepage": "https://github.com/jackys-95/Lightning#readme"
+}
