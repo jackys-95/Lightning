@@ -4,7 +4,7 @@
   "description": "Fast Discord Twitch Stream Notifications.",
   "main": "app.js",
   "dependencies": {
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {},
   "scripts": {
